@@ -1,33 +1,52 @@
-const getSchemaXml = require("./get-schema-xml");
-const convertSchemaXmlToYaml = require("./convert-schema-xml-to-yaml");
-const parser = require("xml2json");
-const jsonata = require("jsonata");
-const YAML = require("yamljs");
 const fileExists = require("fs").existsSync;
 const createDirectory = require("fs").promises.mkdir;
 const deleteFile = require("fs").promises.unlink;
 const writeFile = require("fs").promises.writeFile;
+const readFile = require("fs").promises.readFile;
+
+const getSchemaXml = require("./get-schema-xml");
+const convertSchemaXmlToYaml = require("./convert-schema-xml-to-yaml");
+const convertSchemaYamlToXml = require("./convert-schema-yaml-to-xml");
+
+const binPath = "./bin";
+const schemaFilePath = `${binPath}/schema.yml`;
+const reverseSchemaFilePath = `${binPath}/reverse-schema.xml`;
 
 runAsync();
 
-async function runAsync() {
-    const xml = await getSchemaXml();
-    console.log(`Schema XML Length: ${xml.length}`);
-
-    const yaml = await convertSchemaXmlToYaml(xml);
-    
-    const binPath = "./bin";
+async function runAsync() {    
     if(!fileExists(binPath))
     {
         await createDirectory(binPath);
     }
-    const schemaFilePath = `${binPath}/schema.yml`;
+    await createYaml();
+    await createXml();
+}
+
+async function createYaml() {
     if(fileExists(schemaFilePath))
     {
         await deleteFile(schemaFilePath)
     }
-    writeFile(schemaFilePath, yaml);
+
+    const xml = await getSchemaXml();
+    console.log(`Schema XML Length: ${xml.length}`);
+    const yaml = await convertSchemaXmlToYaml(xml);
+    await writeFile(schemaFilePath, yaml);
 }
+
+async function createXml() {
+    if(fileExists(reverseSchemaFilePath))
+    {
+        await deleteFile(reverseSchemaFilePath);
+    }
+
+    const yaml = await readFile(schemaFilePath, "utf-8");
+    console.log(`Schema YAML Length: ${yaml.length}`);
+    const xml = await convertSchemaYamlToXml(yaml);
+    await writeFile(reverseSchemaFilePath, xml);
+}
+
 
 /*
 

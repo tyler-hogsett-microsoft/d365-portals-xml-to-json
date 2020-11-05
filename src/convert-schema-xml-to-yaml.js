@@ -1,4 +1,4 @@
-const convertXmlJson = require("xml2json").toJson;
+const convertXmlToJson = require("xml2json").toJson;
 const readFile = require("fs").promises.readFile;
 const jsonata = require("jsonata");
 const YAML = require("yamljs");
@@ -6,7 +6,7 @@ const YAML = require("yamljs");
 const xmlToJsonOptions = {
     arrayNotation: true,
     coerce: true,
-    object: false
+    object: true
 };
 
 async function convertSchemaXmlToYaml(schemaXml)
@@ -18,15 +18,15 @@ async function convertSchemaXmlToYaml(schemaXml)
 
 function getRawJson(schemaXml)
 {
-    const rawJson = JSON.parse(convertXmlJson(
+    const rawJson = convertXmlToJson(
         schemaXml,
-        xmlToJsonOptions));
+        xmlToJsonOptions);
     rawJson.entities.forEach(entities =>
         entities.entity.forEach(entity => {
             if(!!entity.filter) {
-                entity.filter = JSON.parse(convertXmlJson(
+                entity.filter = convertXmlToJson(
                     entity.filter[0],
-                    xmlToJsonOptions));
+                    xmlToJsonOptions);
             }
         })
     );

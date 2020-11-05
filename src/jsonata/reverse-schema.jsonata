@@ -1,0 +1,11 @@
+{
+    "entities": [
+        {
+            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+            "entity": $each(entities, function($entity, $name) {{
+                "name": $name,
+                "displayname": $entity.displayName
+            }})
+        }
+    ]
+}
