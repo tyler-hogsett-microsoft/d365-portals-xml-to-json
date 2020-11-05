@@ -1,0 +1,11 @@
+{
+  "name": "d365-portal-xml-to-json",
+  "version": "0.0.1",
+  "description": "Console application for converting exported Dynamics Portals XML documents to \"reasonably structured\" JSON files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
