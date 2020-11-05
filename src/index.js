@@ -1,6 +1,35 @@
+const getSchemaXml = require("./get-schema-xml");
+const convertSchemaXmlToYaml = require("./convert-schema-xml-to-yaml");
 const parser = require("xml2json");
 const jsonata = require("jsonata");
 const YAML = require("yamljs");
+const fileExists = require("fs").existsSync;
+const createDirectory = require("fs").promises.mkdir;
+const deleteFile = require("fs").promises.unlink;
+const writeFile = require("fs").promises.writeFile;
+
+runAsync();
+
+async function runAsync() {
+    const xml = await getSchemaXml();
+    console.log(`Schema XML Length: ${xml.length}`);
+
+    const yaml = await convertSchemaXmlToYaml(xml);
+    
+    const binPath = "./bin";
+    if(!fileExists(binPath))
+    {
+        await createDirectory(binPath);
+    }
+    const schemaFilePath = `${binPath}/schema.yml`;
+    if(fileExists(schemaFilePath))
+    {
+        await deleteFile(schemaFilePath)
+    }
+    writeFile(schemaFilePath, JSON.stringify(yaml, null, 2));
+}
+
+/*
 
 const xml = "<foo attr=\"value\"><bar>widget</bar></foo>";
 console.log(`input -> \r\n${xml}\r\n`);
@@ -32,3 +61,4 @@ console.log(
 // json to xml
 const backToXml = parser.toXml(reverseResult);
 console.log(`back to xml -> \r\n${backToXml}`);
+*/

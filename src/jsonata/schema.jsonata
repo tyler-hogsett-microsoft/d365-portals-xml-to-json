@@ -1,0 +1,46 @@
+(
+    $parseLinkEntity := function($entity) {
+        $exists($entity)
+            ? {
+                "name": $entity.name,
+                "from": $entity.from,
+                "to": $entity.to,
+                "filter": $exists($entity.filter)
+                    ? [ $entity.filter.condition ]
+                    : $null,
+                "linkEntity": $exists($entity."link-entity")
+                    ? $parseLinkEntity($entity."link-entity")
+                    : $null
+            }
+            : $null
+    };
+    {
+        "entities": entities[0].entity {
+            name: {
+                "displayName": displayname,
+                "disablePlugins": disableplugins,
+                "primaryNameField": primarynamefield,
+                "fields": fields.field {
+                    name: {
+                        "customfield": customfield,
+                        "displayName": displayname,
+                        "lookupType": lookupType,
+                        "type": type,
+                        "updateCompare": updateCompare
+                    }
+                },
+                "relationships": relationships.relationship {
+                    name: {
+                        "isReflexive": isreflexive,
+                        "manyToMany": manyToMany,
+                        "manyToManyTargetEntity": m2mTargetEntity,
+                        "relatedEntity": relatedEntityName
+                    }
+                },
+                "filter": {
+                    "linkEntity": $parseLinkEntity(filter.fetch.entity."link-entity")
+                }
+            }
+        }
+    }
+)
