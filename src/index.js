@@ -26,7 +26,7 @@ async function runAsync() {
     {
         await deleteFile(schemaFilePath)
     }
-    writeFile(schemaFilePath, JSON.stringify(yaml, null, 2));
+    writeFile(schemaFilePath, yaml);
 }
 
 /*

@@ -12,17 +12,15 @@ const xmlToJsonOptions = {
 async function convertSchemaXmlToYaml(schemaXml)
 {
     const rawJson = getRawJson(schemaXml);
-    return JSON.parse(JSON.stringify(rawJson));
-    /*const formattedJson = getFormattedJson(rawJson);
-    return formattedJson;*/
+    const formattedJson = await getFormattedJson(rawJson);
+    return YAML.stringify(formattedJson, 100, 2);
 }
 
-async function getRawJson(schemaXml)
+function getRawJson(schemaXml)
 {
     const rawJson = JSON.parse(convertXmlJson(
         schemaXml,
         xmlToJsonOptions));
-    return rawJson;
     rawJson.entities.forEach(entities =>
         entities.entity.forEach(entity => {
             if(!!entity.filter) {
@@ -37,12 +35,11 @@ async function getRawJson(schemaXml)
 
 async function getFormattedJson(rawJson)
 {
-    return JSON.parse(JSON.stringify(rawJson));
     const query = await readFile(
         "./src/jsonata/schema.jsonata",
         "utf-8");
     const expression = jsonata(query);
-    const formattedJson = expression.evaluate();
+    const formattedJson = expression.evaluate(rawJson);
     return formattedJson;
 }
 

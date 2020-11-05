@@ -29,17 +29,21 @@
                         "updateCompare": updateCompare
                     }
                 },
-                "relationships": relationships.relationship {
-                    name: {
-                        "isReflexive": isreflexive,
-                        "manyToMany": manyToMany,
-                        "manyToManyTargetEntity": m2mTargetEntity,
-                        "relatedEntity": relatedEntityName
+                "relationships": $exists(relationships.relationship)
+                    ? relationships.relationship {
+                        name: {
+                            "isReflexive": isreflexive,
+                            "manyToMany": manyToMany,
+                            "manyToManyTargetEntity": m2mTargetEntity,
+                            "relatedEntity": relatedEntityName
+                        }
                     }
-                },
-                "filter": {
-                    "linkEntity": $parseLinkEntity(filter.fetch.entity."link-entity")
-                }
+                    : $null,
+                "filter": $exists(filter)
+                    ? {
+                        "linkEntity": $parseLinkEntity(filter.fetch.entity."link-entity")
+                    }
+                    : $null
             }
         }
     }
