@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "jsonata": "^1.8.4",
     "xml2json": "^0.12.0"
   }
 }
