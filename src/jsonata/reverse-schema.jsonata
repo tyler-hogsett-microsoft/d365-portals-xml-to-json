@@ -1,11 +1,67 @@
-{
-    "entities": [
-        {
-            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-            "entity": $each(entities, function($entity, $name) {{
-                "name": $name,
-                "displayname": $entity.displayName
-            }})
-        }
-    ]
-}
+(
+    $parseLinkEntity := function($linkEntity) {
+        $exists($linkEntity)
+            ? [{
+                "name": $linkEntity.name,
+                "from": $linkEntity.from,
+                "to": $linkEntity.to,
+                "filter": $exists($linkEntity.filter)
+                    ? {
+                        "attribute": $linkEntity.filter.attribute,
+                        "operator": $linkEntity.filter.operator,
+                        "value": $linkEntity.filter.value
+                    },
+                "link-entity": $parseLinkEntity($linkEntity.linkEntity)
+            }]
+            : $null
+    };
+    {
+        "entities": [
+            {
+                "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                "entity": $each(entities, function($entity, $entityName) {{
+                    "name": $entityName,
+                    "displayname": $entity.displayName,
+                    "etc": 0,
+                    "primaryidfield": $entityName & "id",
+                    "primarynamefield": $entity.primaryNameField,
+                    "disableplugins": $entity.disablePlugins,
+                    "fields": [{ "field": $each($entity.fields, function($field, $name) {{
+                        "updateCompare": $field.updateCompare,
+                        "displayname": $field.displayName,
+                        "name": $name,
+                        "type": $field.type,
+                        "primaryKey": $name = $entityName & "id"
+                            ? true
+                            : $null,
+                        "lookupType": $field.lookupType,
+                        "customfield": $field.customField
+                    }})}],
+                    "relationships": $exists($entity.relationships)
+                        ? [{"relationship": [$each($entity.relationships, function($relationship, $name) {{
+                            "name": $name,
+                            "manyToMany": $relationship.manyToMany,
+                            "isreflexive": $relationship.isReflexive,
+                            "relatedEntityName": $relationship.relatedEntity,
+                            "m2mTargetEntity": $relationship.manyToManyTargetEntity,
+                            "m2mTargetEntityPrimaryKey": $relationship.manyToManyTargetEntity & "id"
+                        }})]}]
+                        : [{}],
+                    "filter": $exists($entity.filter)
+                        ? {
+                            "fetch": [{
+                                "entity": [{
+                                    "name": $entityName,
+                                    "attribute": [{
+                                        "name": $entityName & "id"
+                                    }],
+                                    "link-entity": $parseLinkEntity($entity.filter.linkEntity)
+                                }]
+                            }]
+                        }
+                        : $null
+                }})
+            }
+        ]
+    }
+)

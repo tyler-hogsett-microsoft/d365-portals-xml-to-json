@@ -6,7 +6,8 @@ const YAML = require("yamljs");
 const xmlToJsonOptions = {
     arrayNotation: true,
     coerce: true,
-    object: true
+    object: true,
+    reversible: true
 };
 
 async function convertSchemaXmlToYaml(schemaXml)
@@ -21,15 +22,13 @@ function getRawJson(schemaXml)
     const rawJson = convertXmlToJson(
         schemaXml,
         xmlToJsonOptions);
-    rawJson.entities.forEach(entities =>
-        entities.entity.forEach(entity => {
-            if(!!entity.filter) {
-                entity.filter = convertXmlToJson(
-                    entity.filter[0],
-                    xmlToJsonOptions);
-            }
-        })
-    );
+    rawJson.entities[0].entity.forEach(entity => {
+        if(!!entity.filter) {
+            entity.filter = convertXmlToJson(
+                entity.filter[0]["$t"],
+                xmlToJsonOptions);
+        }
+    });
     return rawJson;
 }
 

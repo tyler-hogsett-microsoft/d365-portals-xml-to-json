@@ -22,7 +22,7 @@
                 "primaryNameField": primarynamefield,
                 "fields": fields.field {
                     name: {
-                        "customfield": customfield,
+                        "customField": customfield,
                         "displayName": displayname,
                         "lookupType": lookupType,
                         "type": type,
