@@ -42,4 +42,4 @@ async function getFormattedJson(rawJson)
     return formattedJson;
 }
 
-module.exports = convertSchemaXmlToYaml;
+export default convertSchemaXmlToYaml;

@@ -6,4 +6,4 @@ async function getSchemaXml()
     return file.toString();
 }
 
-module.exports = getSchemaXml;
+export default getSchemaXml;

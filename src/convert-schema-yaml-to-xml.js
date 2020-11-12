@@ -41,4 +41,4 @@ function collapseFetchQueries(rawJson)
     });
 }
 
-module.exports = convertSchemaYamlToXml;
+export default convertSchemaYamlToXml;
