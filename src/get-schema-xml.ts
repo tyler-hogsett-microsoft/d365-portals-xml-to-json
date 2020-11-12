@@ -1,8 +1,9 @@
-const readFile = require("fs").promises.readFile;
+import { promises as fsPromises } from "fs";
+const { readFile } = fsPromises;
 
-async function getSchemaXml()
+async function getSchemaXml(schemaPath: string)
 {
-  const file = await readFile("test/sample-portal/data_schema.xml");
+  const file = await readFile(schemaPath);
   return file.toString();
 }
 
