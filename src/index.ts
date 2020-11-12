@@ -1,3 +1,4 @@
+import { program } from "commander";
 import {
     existsSync as fileExists,
     promises as fsPromises
@@ -10,6 +11,9 @@ const readFile = fsPromises.readFile;
 import getSchemaXml from "./get-schema-xml";
 import convertSchemaXmlToYaml from "./convert-schema-xml-to-yaml";
 import convertSchemaYamlToXml from "./convert-schema-yaml-to-xml";
+
+program.option("-i, --input <xmlPath>", "path to schema XML");
+program.parse(process.argv);
 
 const binPath = "./bin";
 const schemaFilePath = `${binPath}/schema.yml`;
