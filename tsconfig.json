@@ -1,12 +1,11 @@
 {
-  "include": ["src/**/*"],
+  "include": ["src/**/*.*"],
   "compilerOptions": {
     "target": "es5",
+    "module": "commonjs",
     //"strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node"
+    "forceConsistentCasingInFileNames": true
   }
 }

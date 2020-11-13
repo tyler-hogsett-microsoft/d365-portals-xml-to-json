@@ -10,22 +10,20 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@rollup/plugin-node-resolve": "^10.0.0",
-    "@rollup/plugin-typescript": "^6.1.0",
-    "@types/xml-escape": "^1.1.0",
-    "@types/xml2json": "^0.11.3",
-    "@types/yamljs": "^0.2.31",
     "commander": "^6.2.0",
     "jsonata": "^1.8.4",
-    "rollup": "^2.33.1",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-terser": "^7.0.2",
-    "ts-node-dev": "^1.0.0",
-    "tslib": "^2.0.3",
-    "typescript": "^4.0.5",
     "xml-escape": "^1.1.0",
     "xml-formatter": "^2.3.1",
     "xml2json": "^0.12.0",
     "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/xml-escape": "^1.1.0",
+    "@types/xml2json": "^0.11.3",
+    "@types/yamljs": "^0.2.31",
+    "ts-node-dev": "^1.0.0",
+    "typescript": "^4.0.5",
+    "webpack": "^5.4.0",
+    "webpack-cli": "^4.2.0"
   }
 }
