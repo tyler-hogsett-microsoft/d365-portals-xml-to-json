@@ -4,9 +4,17 @@ import packSchema from "./pack-schema";
 
 program
   .version("0.0.1")
-  .command("extract <inputXmlPath> [outputYmlPath]")
-    .action(extractSchema)
+  .command("extract <resourceType> <inputPath> [outputPath]")
+  .action(extractResource);
 program
   .command("pack <inputYmlPath> [outputXmlPath]")
     .action(packSchema);
 program.parse(process.argv);
+
+async function extractResource(resourceType: string, inputPath: string, outputPath: string)
+{
+  if(resourceType === "schema")
+  {
+    extractSchema(inputPath, outputPath);
+  }
+}

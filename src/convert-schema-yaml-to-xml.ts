@@ -1,9 +1,10 @@
-const YAML = require("yamljs");
-const readFile = require("fs").promises.readFile;
-const jsonata = require("jsonata");
-const convertJsonToXml = require("xml2json").toXml;
-const xmlEscape = require("xml-escape");
-const formatXml = require("xml-formatter");
+import YAML from "yamljs";
+import { promises as fsPromises } from "fs";
+const { readFile } = fsPromises;
+import jsonata from "jsonata";
+import { toXml as convertJsonToXml } from "xml2json";
+import xmlEscape from "xml-escape";
+import formatXml from "xml-formatter";
 
 async function convertSchemaYamlToXml(yaml)
 {

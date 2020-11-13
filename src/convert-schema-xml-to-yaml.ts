@@ -1,14 +1,8 @@
-const convertXmlToJson = require("xml2json").toJson;
-const readFile = require("fs").promises.readFile;
-const jsonata = require("jsonata");
-const YAML = require("yamljs");
-
-const xmlToJsonOptions = {
-  arrayNotation: true,
-  coerce: true,
-  object: true,
-  reversible: true
-};
+import { toJson as convertXmlToJson } from "xml2json";
+import { promises as fsPromises } from "fs";
+const { readFile } = fsPromises;
+import jsonata from "jsonata";
+import YAML from "yamljs";
 
 async function convertSchemaXmlToYaml(schemaXml)
 {
@@ -17,16 +11,26 @@ async function convertSchemaXmlToYaml(schemaXml)
   return YAML.stringify(formattedJson, 100, 2);
 }
 
-function getRawJson(schemaXml)
+function getRawJson(schemaXml: string)
 {
   const rawJson = convertXmlToJson(
     schemaXml,
-    xmlToJsonOptions);
+    {
+      arrayNotation: true,
+      coerce: true,
+      object: true,
+      reversible: true
+    });
   rawJson.entities[0].entity.forEach(entity => {
     if(!!entity.filter) {
       entity.filter = convertXmlToJson(
         entity.filter[0]["$t"],
-        xmlToJsonOptions);
+        {
+          arrayNotation: true,
+          coerce: true,
+          object: true,
+          reversible: true
+        });
     }
   });
   return rawJson;
